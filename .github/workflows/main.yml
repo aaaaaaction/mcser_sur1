@@ -14,7 +14,7 @@ jobs:
         echo -e "${{ secrets.PASSWD }}\n${{ secrets.PASSWD }}" | sudo passwd runner
         curl -s https://install.zerotier.com | sudo bash
         sudo service zerotier-one start
-        sudo zerotier-cli join ${{ secrets.ID }}
+        #sudo zerotier-cli join ${{ secrets.ID }}
         
         
     - name: Run Frp
