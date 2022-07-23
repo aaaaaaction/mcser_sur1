@@ -83,4 +83,5 @@ jobs:
         echo "${{ secrets.GEM }}" > gem.txt
         echo "${{ secrets.GUN }}" > gun.txt
         python start.py
-        sleep 60
+        sleep 30
+      
