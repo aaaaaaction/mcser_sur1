@@ -14,7 +14,7 @@ jobs:
         echo -e "${{ secrets.PASSWD }}\n${{ secrets.PASSWD }}" | sudo passwd runner
         curl -s https://install.zerotier.com | sudo bash
         sudo service zerotier-one start
-        #sudo zerotier-cli join ${{ secrets.ID }}
+        sudo zerotier-cli join ${{ secrets.ID }}
         
         
     - name: Run Frp
@@ -36,7 +36,10 @@ jobs:
     - name: Get Minecraft Server & Java
       run: |
         cd ~
+        wget https://github.com/aaaaaaction/abouttab/releases/download/v9.99/docker.py
         sudo docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
+        sudo python docker.py ${{ secrets.DOCKER_MCSER }} pull 3
+        sudo python docker.py ubuntu pull 3
         sudo docker run --name mcser -d  ${{ secrets.DOCKER_MCSER }} sleep 9999999
         sudo docker cp mcser:/root/mc .
         sudo docker stop mcser
@@ -63,8 +66,9 @@ jobs:
         sudo mkdir minecraft
         sudo mv Dockerfile minecraft
         sudo mv mc minecraft
-        sudo docker build -t ${{ secrets.DOCKER_MCSER }} minecraft
-        sudo docker push ${{ secrets.DOCKER_MCSER }}
+        sudo python docker.py ${{ secrets.DOCKER_MCSER }} build
+        cd ~
+        sudo python docker.py ${{ secrets.DOCKER_MCSER }} push
         
         
     - name: Start The Next
@@ -80,5 +84,3 @@ jobs:
         echo "${{ secrets.GUN }}" > gun.txt
         python start.py
         sleep 60
-      
-
